@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('assert');
-const {Queue, Qnode} = require('../lib/index');
+const {Queue, Qnode, Qfunnel} = require('../lib/index');
 const moment = require('moment');
 
 // 创建普通节点
@@ -64,15 +64,22 @@ setTimeout(function () {
     checked = true;
 }, 15 * 1000);
 
+//创建漏斗
+var funnel = new Qfunnel({
+    cron: '*/15 * * * * ?',
+    callback: function () {
+        // 填满漏斗至10
+        this.set(10);
+    }
+});
+// 打开漏斗
+funnel.open();
 // 创建容错节点
 var node4 = new Qnode({
     retry: true,
     inspect: function () {
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                resolve(true);
-            }, 3000);
-        });
+        // 从漏斗中获取一个
+        return funnel.get(1);
     },
     cron: '*/5 * * * * ?',
     callback: function (count) {
@@ -100,6 +107,8 @@ q.on('process', function (process) {
 
 q.start().then(function (result) {
     console.log(moment().format('HH:mm:ss') + ':完成任务');
-    console.log(result)
+    console.log(result);
+    // 关闭漏斗
+    funnel.close();
 });
 
