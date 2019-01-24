@@ -66,7 +66,7 @@ let checked = false;
 
 //创建漏斗
 var funnel = new Qfunnel({
-    cron: '*/50 * * * * ?',
+    cron: '* */2 * * * ?',
     callback: function () {
         // 填满漏斗至10
         this.set(10);
@@ -91,7 +91,7 @@ var node4 = new Qnode({
         if(!timeout){
             timeout = setTimeout(function () {
                 console.log(moment().format('HH:mm:ss') + ':返回上面节点');
-                q.back(3);
+                q.back(2);
                 // console.log(moment().format('HH:mm:ss') + ':结束队列');
                 // q.stop();
                 // console.log(moment().format('HH:mm:ss') + ':暂停队列');
