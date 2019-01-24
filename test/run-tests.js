@@ -10,7 +10,7 @@ var node = new Qnode({
         let count = 0;
         console.log(moment().format('HH:mm:ss') + ':执行普通节点');
         count++;
-        console.log('执行结果：' + count);
+        console.log('执行结果:' + count);
         return count;
     },
 });
@@ -21,7 +21,7 @@ var node2 = new Qnode({
     callback: function (count) {
         console.log(moment().format('HH:mm:ss') + ':执行延迟节点');
         count++;
-        console.log('执行结果：' + count);
+        console.log('执行结果:' + count);
         return count;
     },
 });
@@ -52,7 +52,7 @@ var node3 = new  Qnode({
             list.forEach(function (item) {
                 count += item;
             });
-            console.log('执行结果：' + count);
+            console.log('执行结果:' + count);
             return count;
         });
     },
@@ -60,13 +60,13 @@ var node3 = new  Qnode({
 
 let checked = false;
 
-setTimeout(function () {
-    checked = true;
-}, 15 * 1000);
+// setTimeout(function () {
+//     checked = true;
+// }, 15 * 1000);
 
 //创建漏斗
 var funnel = new Qfunnel({
-    cron: '*/15 * * * * ?',
+    cron: '*/50 * * * * ?',
     callback: function () {
         // 填满漏斗至10
         this.set(10);
@@ -74,22 +74,39 @@ var funnel = new Qfunnel({
 });
 // 打开漏斗
 funnel.open();
+var timeout;
 // 创建容错节点
 var node4 = new Qnode({
     retry: true,
     inspect: function () {
         // 从漏斗中获取一个
-        return funnel.get(1);
+        checked = funnel.get(1);
+        console.log(moment().format('HH:mm:ss') + ':检查容错节点');
+        console.log('检查结果:' + checked);
+        return checked;
     },
     cron: '*/5 * * * * ?',
     callback: function (count) {
+
+        if(!timeout){
+            timeout = setTimeout(function () {
+                console.log(moment().format('HH:mm:ss') + ':暂停容错节点');
+                q.pause();
+                setTimeout(function () {
+                    console.log(moment().format('HH:mm:ss') + ':重启容错节点');
+                    q.resume();
+                }, 10000)
+
+            }, 10000)
+        }
+
         console.log(moment().format('HH:mm:ss') + ':执行容错节点');
         if (!checked) {
             console.log('执行错误');
             throw new Error('执行错误');
         }
         count++;
-        console.log('执行结果：' + count);
+        console.log('执行结果:' + count);
         return count;
     },
 });
