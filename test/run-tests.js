@@ -90,12 +90,16 @@ var node4 = new Qnode({
 
         if(!timeout){
             timeout = setTimeout(function () {
-                console.log(moment().format('HH:mm:ss') + ':暂停容错节点');
-                q.pause();
-                setTimeout(function () {
-                    console.log(moment().format('HH:mm:ss') + ':重启容错节点');
-                    q.resume();
-                }, 10000)
+                console.log(moment().format('HH:mm:ss') + ':返回上面节点');
+                q.back(3);
+                // console.log(moment().format('HH:mm:ss') + ':结束队列');
+                // q.stop();
+                // console.log(moment().format('HH:mm:ss') + ':暂停队列');
+                // q.pause();
+                // setTimeout(function () {
+                //     console.log(moment().format('HH:mm:ss') + ':重启队列');
+                //     q.resume();
+                // }, 10000)
 
             }, 10000)
         }
