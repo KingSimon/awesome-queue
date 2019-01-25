@@ -66,14 +66,12 @@ let checked = false;
 
 //创建漏斗
 var funnel = new Qfunnel({
-    cron: '* */2 * * * ?',
+    cron: '0/30 * * * * ?',
     callback: function () {
         // 填满漏斗至10
         this.set(10);
     }
 });
-// 打开漏斗
-funnel.open();
 var timeout;
 // 创建容错节点
 var node4 = new Qnode({
@@ -87,8 +85,9 @@ var node4 = new Qnode({
     },
     cron: '*/5 * * * * ?',
     callback: function (count) {
-
         if(!timeout){
+            // 打开漏斗
+            funnel.open();
             timeout = setTimeout(function () {
                 console.log(moment().format('HH:mm:ss') + ':返回上面节点');
                 q.back(2);
