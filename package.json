@@ -1,6 +1,6 @@
 {
   "name": "awesome-queue",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "promise queue extension",
   "main": "lib/index.js",
   "scripts": {

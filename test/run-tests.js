@@ -125,5 +125,8 @@ q.start().then(function (result) {
     console.log(result);
     // 关闭漏斗
     funnel.close();
+
+    console.log(q.status);
+    console.log(q.process);
 });
 
