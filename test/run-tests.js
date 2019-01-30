@@ -77,7 +77,7 @@ var timeout;
 var node4 = new Qnode({
     retry: true,
     inspect: function (param, frist) {
-        if(frist) {
+        if(frist && !timeout) {
             // 打开漏斗
             funnel.open();
             timeout = setTimeout(function () {
