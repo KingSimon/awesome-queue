@@ -76,16 +76,8 @@ var timeout;
 // 创建容错节点
 var node4 = new Qnode({
     retry: true,
-    inspect: function () {
-        // 从漏斗中获取一个
-        checked = funnel.get(1);
-        console.log(moment().format('HH:mm:ss') + ':检查容错节点');
-        console.log('检查结果:' + checked);
-        return checked;
-    },
-    cron: '*/5 * * * * ?',
-    callback: function (count) {
-        if(!timeout){
+    inspect: function (param, frist) {
+        if(frist) {
             // 打开漏斗
             funnel.open();
             timeout = setTimeout(function () {
@@ -100,14 +92,17 @@ var node4 = new Qnode({
                 //     q.resume();
                 // }, 10000)
 
-            }, 10000)
+            }, 10000);
         }
-
+        // 从漏斗中获取一个
+        checked = funnel.get(1);
+        console.log(moment().format('HH:mm:ss') + ':检查容错节点');
+        console.log('检查结果:' + checked);
+        return checked;
+    },
+    cron: '*/5 * * * * ?',
+    callback: function (count) {
         console.log(moment().format('HH:mm:ss') + ':执行容错节点');
-        if (!checked) {
-            console.log('执行错误');
-            throw new Error('执行错误');
-        }
         count++;
         console.log('执行结果:' + count);
         return count;
