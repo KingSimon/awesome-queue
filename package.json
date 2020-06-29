@@ -1,6 +1,6 @@
 {
   "name": "awesome-queue",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "promise queue extension",
   "main": "lib/index.js",
   "scripts": {
@@ -13,9 +13,12 @@
   "author": "kingsimon",
   "license": "ISC",
   "dependencies": {
-    "colors": "^1.3.3",
-    "inherits": "^2.0.3",
-    "moment": "^2.24.0",
-    "node-schedule": "^1.3.1"
+    "async-lock": "^1.2.4",
+    "inherits": "^2.0.4",
+    "moment": "^2.27.0",
+    "node-schedule": "^1.3.2"
+  },
+  "devDependencies": {
+    "colors": "^1.4.0"
   }
 }
