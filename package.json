@@ -13,6 +13,7 @@
   "author": "kingsimon",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.3.3",
     "inherits": "^2.0.3",
     "moment": "^2.24.0",
     "node-schedule": "^1.3.1"
